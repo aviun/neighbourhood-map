@@ -2,7 +2,36 @@ html, body {
     height: 100%;
     margin: 0;
     padding: 0;
+    text-align: left;
+    font-family: Georgia, Times, serif;
+    font-size: 12px;
+    display: inline;
 }
+
 #map {
     height: 100%;
+}
+
+ul {
+    background-color: #ffcaca;
+    padding: 0;
+    list-style: none;
+}
+
+li {
+    display: block;
+    text-decoration: none;
+    color: #000000;
+    background-color: #FFFFFF;
+    line-height: 30px;
+    border-bottom: 1px solid #CCCCCC;
+    padding-left: 10px;
+    cursor: pointer;
+}
+
+.filterDiv ul li a:hover {
+}
+
+.filterDiv ul li a strong {
+    margin-right: 10px;
 }
