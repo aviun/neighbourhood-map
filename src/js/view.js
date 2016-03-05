@@ -9,9 +9,9 @@ var view = {
 
     //displays a list of places of interest on the screen
     displayList : function(){
-        var list = modelview.getLocationNames();
-        for (var i = 0; i < list.length; i++) {
-            $("#locationList").append("<li>" + list[i] + "</li>");
+        var locationNames = viewModel.getLocationNames();
+        for (var i = 0; i < locationNames.length; i++) {
+            $("#locationList").append("<li>" + locationNames[i] + "</li>");
         }
     },
 
