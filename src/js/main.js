@@ -19,12 +19,13 @@ var viewModel = {
     toggleMarker: function (location) {
         viewModel.disableMarkers();
         location.marker.setAnimation(google.maps.Animation.BOUNCE);
-
+        location.infowindow.open(map, location.marker);
     },
 
     disableMarkers: function() {
         for (var i = 0; i < this.locations().length; i++) {
             this.locations()[i].marker.setAnimation(null);
+            this.locations()[i].infowindow.close();
         }
     },
 
@@ -74,7 +75,7 @@ var model = {
     setContent: function () {
         for (var i = 0; i < this.locations.length; i++) {
             this.locations[i].infowindow = new google.maps.InfoWindow({
-                content: location.title + " " + location.content
+                content: this.locations[i].title
             });
         }
     },
@@ -85,18 +86,12 @@ var model = {
         }
     },
 
-    toggleBounce: function () {
+    toggleBounce: function (location) {
         viewModel.disableMarkers();
-        if (this.getAnimation() !== null) {
-            this.setAnimation(null);
-        } else {
-            this.setAnimation(google.maps.Animation.BOUNCE);
-        }
+        location.marker.setAnimation(google.maps.Animation.BOUNCE);
     },
 
-
     createMarker: function (location) {
-
         var marker = new google.maps.Marker({
             title: location.title,
             map: map,
@@ -104,15 +99,15 @@ var model = {
             animation: google.maps.Animation.DROP,
             position: new google.maps.LatLng(location.lat, location.lng)
         });
-        marker.addListener('click', this.toggleBounce);
+        marker.addListener('click', function(){
+            model.toggleBounce(location);
+            location.infowindow.open(map, marker);
+        });
         return marker;
     },
-
 
     init: function () {
         this.setContent();
         this.addMarkers();
     }
-
-
 };
