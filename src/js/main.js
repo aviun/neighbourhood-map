@@ -53,8 +53,8 @@ var viewModel = {
         viewModel.searchQuery.subscribe(this.filterItems);
     },
 
+    //method is used for search and filter locations, KO updates the list when finds matches
     filterItems: function () {
-
         var filter = viewModel.searchQuery().toLowerCase();
         console.log("Filtered by " + filter);
 
@@ -68,31 +68,8 @@ var viewModel = {
             else {
                 model.locations[i].isFiltered(false);
             }
-
         }
-
-        /*model.locations[1].isFiltered(false);
-         console.log(model.locations[1].isFiltered());
-         console.log(viewModel.locations()[1].isFiltered());
-         */
-
-
-        /*
-         var filter = viewModel.selectedChoice();
-
-         if (!filter) {
-         return viewModel.locations();
-         } else {
-
-         var filtered = ko.utils.arrayFilter(viewModel.locations(), function (item) {
-         return (item.title === filter);
-         });
-
-         return filtered
-         }*/
     }
-
-
 };
 
 //Model
