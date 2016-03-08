@@ -5,11 +5,7 @@
     <title>Neighbourhood map</title>
 
     <script src="js/lib/knockout-3.2.0.js"></script>
-    <script src="js/model.js"></script>
-    <script src="js/view.js"></script>
-    <script src="js/viewmodel.js"></script>
     <script src="js/main.js"></script>
-
 
     <script async defer
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDMJMdAhkL-Rc0f9pAoX51O5Mc72hR0qis&callback=initMap"></script>
@@ -22,16 +18,14 @@
 
 <div class="col-md-2 col-xs-4 filterDiv" >
     <h4>Kyiv favorites:</h4>
-    <ul id="locationList"></ul>
+    <ul id="locationList" data-bind="foreach: locations">
+        <li data-bind="text: title, click: $parent.toggleMarker"></li>
+    </ul>
 </div>
 <div class="col-md-10 col-xs-8" id="map"></div>
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
       integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-
-
-
-
 
 <link rel="stylesheet" href="css/style.css">
 </body>
