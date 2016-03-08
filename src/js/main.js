@@ -56,7 +56,6 @@ var viewModel = {
     //Markers appear and disappear when list is filtered
     filterItems: function () {
         var filter = viewModel.searchQuery().toLowerCase();
-        console.log("Filtered by " + filter);
 
         for (var i = 0; i < model.locations.length; i++) {
 
