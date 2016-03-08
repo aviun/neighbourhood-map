@@ -53,7 +53,8 @@ var viewModel = {
         viewModel.searchQuery.subscribe(this.filterItems);
     },
 
-    //method is used for search and filter locations, KO updates the list when finds matches
+    //method is used for search and filter locations, KO updates the list when finds matches.
+    //Markers appear and disappear when list is filtered
     filterItems: function () {
         var filter = viewModel.searchQuery().toLowerCase();
         console.log("Filtered by " + filter);
