@@ -7,7 +7,6 @@ html, body {
     font-size: 14px;
     display: inline;
     background-color: antiquewhite;
-
 }
 
 #map {
@@ -26,8 +25,6 @@ li {
     border-bottom: 2px solid antiquewhite;
     padding: 0 0 5px 10px;
     cursor: pointer;
-
-
     background-color: #3a230c;
     color: antiquewhite;
 }
@@ -42,5 +39,4 @@ input {
     line-height: 30px;
     margin-bottom: 10px;
     border-bottom: 2px solid antiquewhite;
-
 }

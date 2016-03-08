@@ -14,13 +14,12 @@ var initMap = function () {
 // VIEW MODEL.
 // Displays the list of locations on the left side of the screen
 var viewModel = {
-
+Minor
     self: this,
+    locations: ko.observableArray(),
 
     // variable used for search/filter functionality
     searchQuery: ko.observable(''),
-
-    locations: ko.observableArray(),
 
     //this method is called by KO list item from index.html when the list item is clicked.
     // it activates a marker on the map.
@@ -66,7 +65,6 @@ var viewModel = {
             if (searchedTitle.indexOf(filter) > -1) {
                 model.locations[i].isFiltered(true);
                 model.locations[i].marker.setMap(map);
-
             }
             else {
                 model.locations[i].isFiltered(false);
@@ -76,7 +74,7 @@ var viewModel = {
     }
 };
 
-//Model
+//MODEL
 //holds all the information about locations. Operates markers when clicked from map interface.
 var model = {
     self: this,
