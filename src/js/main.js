@@ -86,12 +86,14 @@ var model = {
     },
 
     toggleBounce: function () {
+        viewModel.disableMarkers();
         if (this.getAnimation() !== null) {
             this.setAnimation(null);
         } else {
             this.setAnimation(google.maps.Animation.BOUNCE);
         }
     },
+
 
     createMarker: function (location) {
 
