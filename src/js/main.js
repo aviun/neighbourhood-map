@@ -14,7 +14,7 @@ var initMap = function () {
 // VIEW MODEL.
 // Displays the list of locations on the left side of the screen
 var viewModel = {
-Minor
+
     self: this,
     locations: ko.observableArray(),
 
