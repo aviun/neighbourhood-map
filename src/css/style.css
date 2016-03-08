@@ -22,7 +22,6 @@ ul {
 li {
     display: block;
     text-decoration: none;
-    color: #3a230c;
     line-height: 30px;
     border-bottom: 2px solid antiquewhite;
     padding: 0 0 5px 10px;
@@ -36,9 +35,12 @@ li {
 li:hover {
     background-color: antiquewhite;
     color: #3a230c;
-
 }
 
-h4 {
+input {
+    width: 100%;
+    line-height: 30px;
+    margin-bottom: 10px;
+    border-bottom: 2px solid antiquewhite;
 
 }

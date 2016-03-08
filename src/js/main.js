@@ -1,4 +1,3 @@
-
 var map = '';
 
 //Google API script is calling this function to launch the app and render the map
@@ -15,7 +14,12 @@ var initMap = function () {
 // VIEW MODEL.
 // Displays the list of locations on the left side of the screen
 var viewModel = {
+
     self: this,
+
+    // variable used for search/filter functionality
+    searchQuery: ko.observable(''),
+
     locations: ko.observableArray(),
 
     //this method is called by KO list item from index.html when the list item is clicked.
@@ -27,7 +31,7 @@ var viewModel = {
     },
 
     //before activating a marker on the map, all the other markers should be deactivated
-    disableMarkers: function() {
+    disableMarkers: function () {
         for (var i = 0; i < this.locations().length; i++) {
             this.locations()[i].marker.setAnimation(null);
             this.locations()[i].infowindow.close();
@@ -46,7 +50,49 @@ var viewModel = {
         model.init();
         this.fillLocations();
         ko.applyBindings(viewModel);
+        viewModel.searchQuery.subscribe(this.filterItems);
+    },
+
+    filterItems: function () {
+
+        var filter = viewModel.searchQuery().toLowerCase();
+        console.log("Filtered by " + filter);
+
+        for (var i = 0; i < model.locations.length; i++) {
+
+            var searchedTitle = model.locations[i].title().toLowerCase();
+
+            if (searchedTitle.indexOf(filter) > -1) {
+                model.locations[i].isFiltered(true);
+            }
+            else {
+                model.locations[i].isFiltered(false);
+            }
+
+        }
+
+        /*model.locations[1].isFiltered(false);
+         console.log(model.locations[1].isFiltered());
+         console.log(viewModel.locations()[1].isFiltered());
+         */
+
+
+        /*
+         var filter = viewModel.selectedChoice();
+
+         if (!filter) {
+         return viewModel.locations();
+         } else {
+
+         var filtered = ko.utils.arrayFilter(viewModel.locations(), function (item) {
+         return (item.title === filter);
+         });
+
+         return filtered
+         }*/
     }
+
+
 };
 
 //Model
@@ -57,29 +103,34 @@ var model = {
     //the list of initial locations
     locations: [
         {
-            title: 'Home',
+            title: ko.observable('Home'),
             lat: 50.38,
-            lng: 30.46
+            lng: 30.46,
+            isFiltered: ko.observable(true)
         },
         {
-            title: 'Maidan Nezalezhnosti',
+            title: ko.observable('Maidan Nezalezhnosti'),
             lat: 50.44,
-            lng: 30.52
+            lng: 30.52,
+            isFiltered: ko.observable(true)
         },
         {
-            title: 'Mariinsky Palace',
+            title: ko.observable('Mariinsky Palace'),
             lat: 50.44,
-            lng: 30.53
+            lng: 30.53,
+            isFiltered: ko.observable(true)
         },
         {
-            title: 'Kyivo Pechersk Lavra',
+            title: ko.observable('Kyivo Pechersk Lavra'),
             lat: 50.43,
-            lng: 30.55
+            lng: 30.55,
+            isFiltered: ko.observable(true)
         },
         {
-            title: 'Richard Lionheart Castle',
+            title: ko.observable('Richard Lionheart Castle'),
             lat: 50.46,
-            lng: 30.51
+            lng: 30.51,
+            isFiltered: ko.observable(true)
         }
     ],
 
@@ -87,7 +138,7 @@ var model = {
     setContent: function () {
         for (var i = 0; i < this.locations.length; i++) {
             this.locations[i].infowindow = new google.maps.InfoWindow({
-                content: this.locations[i].title
+                content: this.locations[i].title()
             });
         }
     },
@@ -108,13 +159,13 @@ var model = {
     //marker creation function
     createMarker: function (location) {
         var marker = new google.maps.Marker({
-            title: location.title,
+            title: location.title(),
             map: map,
             draggable: false,
             animation: google.maps.Animation.DROP,
             position: new google.maps.LatLng(location.lat, location.lng)
         });
-        marker.addListener('click', function(){
+        marker.addListener('click', function () {
             model.toggleBounce(location);
             location.infowindow.open(map, marker);
         });
@@ -125,6 +176,7 @@ var model = {
     init: function () {
         this.addMarkers();
         this.setContent();
-
     }
 };
+
+
