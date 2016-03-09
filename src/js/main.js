@@ -1,15 +1,51 @@
 var map = '';
 
+//function removes unnecessary POI from the map
+var applyMapStyles = function() {
+    var styleArray = [
+        {
+            featureType: "all",
+            stylers: [
+                {visibility: "off"}
+            ]
+        },
+        {
+            featureType: "road",
+            stylers: [
+                {visibility: "on"}
+            ]
+        },
+        {
+            featureType: "landscape",
+            stylers: [
+                {visibility: "on"}
+            ]
+        },
+        {
+            featureType: "water",
+            stylers: [
+                {visibility: "on"}
+            ]
+        }
+    ];
+    map.setOptions({styles: styleArray});
+};
+
 //Google API script is calling this function to launch the app and render the map
 var initMap = function () {
-
-    map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 12,
-        center: new google.maps.LatLng(50.442, 30.548),
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-    });
+    try {
+        map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 12,
+            center: new google.maps.LatLng(50.442, 30.548),
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        });
+        applyMapStyles();
         viewModel.init();
-    };
+    }
+    catch (error) {
+        alert("Unable to connect to Google Maps. Error: " + error);
+    }
+};
 
 // VIEW MODEL.
 // Displays the list of locations on the left side of the screen
@@ -105,11 +141,24 @@ var model = {
             isFiltered: ko.observable(true)
         },
         {
-            title: ko.observable('Andriyivskyy Descent'),
-            lat: 50.46,
+            title: ko.observable("Saint Sophia's Cathedral, Kiev"),
+            lat: 50.45,
             lng: 30.51,
             isFiltered: ko.observable(true)
+        },
+        {
+            title: ko.observable('Berehynia'),
+            lat: 50.450,
+            lng: 30.524,
+            isFiltered: ko.observable(true)
+        },
+        {
+            title: ko.observable('Red University Building'),
+            lat: 50.442,
+            lng: 30.511,
+            isFiltered: ko.observable(true)
         }
+
     ],
 
     //adds content info from Wikipedia to be displayed on the infowindow when marker is activated
@@ -140,14 +189,14 @@ var model = {
                         for (var id in pages) {
                             result = pages[id].extract;
                             model.locations[i].infowindow = new google.maps.InfoWindow({
-                                content: '<div style="width: 95%; height:200px; text-align: justify" <strong><b>' + model.locations[i].title() + '</b></strong>'+'<br><br>'+ "Wikipedia info:" + '<br>' + result + '</div>',
+                                content: '<div style="width: 95%; height:200px;" <strong><b>' + model.locations[i].title() + '</b></strong>' + '<br><br>' + "Wikipedia info:" + '<br>' + result + '</div>',
                                 maxWidth: '200'
                             })
                         }
                         clearTimeout(wikiRequestTimeout);
                     },
                     //error handling for Wikipedia info
-                    fail: function(){
+                    fail: function () {
                         alert("Unable to reach Wikipedia");
                         model.locations[i].infowindow = new google.maps.InfoWindow({
                             content: model.locations[i].title() + "<br><br>" + "Wikipedia info:" + "<br>" + "Unavailable"
