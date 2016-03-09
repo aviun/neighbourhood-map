@@ -46,7 +46,7 @@ input {
     height: 200px;
 }
 
-@media screen and (max-device-width: 600px) {
+@media screen and (max-device-width: 700px) {
     body {
         font-size: 10px;
     }
