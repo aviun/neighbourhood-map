@@ -9,6 +9,14 @@ And the the source code [here](https://github.com/aviun/neighbourhood-map/tree/m
 
 Both source and production code are in the same repository, in src and dist directories respectively. 
 Grunt was used for minimizing html, css and js files.
+To run grunt: 
+
+1. Change to the project's root directory.
+
+2. Install project dependencies with the command: npm install.
+
+3. Run Grunt with the command: grunt.
+
 
 The tasks accomplished:
 

@@ -183,14 +183,14 @@ var model = {
                     else {
                         result = "No pages were found in Wiki";
                         model.locations[i].infowindow = new google.maps.InfoWindow({
-                            content: model.locations[i].title() + "<br><br>" + "Wikipedia info:" + "<br>" + result,
+                            content: model.locations[i].title() + "<br><br>" + "Wikipedia info:" + "<br>" + result
                         })
                     }
                     for (var id in pages) {
                         result = pages[id].extract;
                         model.locations[i].infowindow = new google.maps.InfoWindow({
-                            content: '<div style="width: 95%; height:200px;" <strong><b>' + model.locations[i].title() + '</b></strong>' + '<br><br>' + "Wikipedia info:" + '<br>' + result + '</div>',
-                            maxWidth: '200'
+                            content: '<div class="infoWindow"' + '<strong><b>' + model.locations[i].title() + '</b></strong>' + '<br><br>' + "Wikipedia info:" + '<br>' + result + '</div>',
+                            maxWidth: '150'
                         })
                     }
                     clearTimeout(wikiRequestTimeout);
