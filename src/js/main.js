@@ -1,7 +1,7 @@
 var map = '';
 
 //function removes unnecessary POI from the map
-var applyMapStyles = function() {
+var applyMapStyles = function () {
     var styleArray = [
         {
             featureType: "all",
@@ -174,35 +174,32 @@ var model = {
                 var result = '';
                 $.ajax({
                     url: wikiURL,
-                    dataType: "jsonp",
-                    success: function (data) {
-                        if (data && data.query && data.query.pages) {
-                            var pages = data.query.pages;
-                        }
-                        // if error: no pages returned
-                        else {
-                            result = "No pages were found in Wiki";
-                            model.locations[i].infowindow = new google.maps.InfoWindow({
-                                content: model.locations[i].title() + "<br><br>" + "Wikipedia info:" + "<br>" + result,
-                            })
-                        }
-                        for (var id in pages) {
-                            result = pages[id].extract;
-                            model.locations[i].infowindow = new google.maps.InfoWindow({
-                                content: '<div style="width: 95%; height:200px;" <strong><b>' + model.locations[i].title() + '</b></strong>' + '<br><br>' + "Wikipedia info:" + '<br>' + result + '</div>',
-                                maxWidth: '200'
-                            })
-                        }
-                        clearTimeout(wikiRequestTimeout);
-                    },
-                    //error handling for Wikipedia info
-                    fail: function () {
-                        alert("Unable to reach Wikipedia");
+                    dataType: "jsonp"
+                }).done(function (data) {
+                    if (data && data.query && data.query.pages) {
+                        var pages = data.query.pages;
+                    }
+                    // if error: no pages returned
+                    else {
+                        result = "No pages were found in Wiki";
                         model.locations[i].infowindow = new google.maps.InfoWindow({
-                            content: model.locations[i].title() + "<br><br>" + "Wikipedia info:" + "<br>" + "Unavailable"
+                            content: model.locations[i].title() + "<br><br>" + "Wikipedia info:" + "<br>" + result,
                         })
                     }
-                });
+                    for (var id in pages) {
+                        result = pages[id].extract;
+                        model.locations[i].infowindow = new google.maps.InfoWindow({
+                            content: '<div style="width: 95%; height:200px;" <strong><b>' + model.locations[i].title() + '</b></strong>' + '<br><br>' + "Wikipedia info:" + '<br>' + result + '</div>',
+                            maxWidth: '200'
+                        })
+                    }
+                    clearTimeout(wikiRequestTimeout);
+                }).fail(function () {
+                    alert("Unable to reach Wikipedia.");
+                    model.locations[i].infowindow = new google.maps.InfoWindow({
+                        content: model.locations[i].title() + "<br><br>" + "Wikipedia info:" + "<br>" + "Unavailable"
+                    })
+                })
             }
         }
     },
