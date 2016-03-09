@@ -2,14 +2,14 @@ var map = '';
 
 //Google API script is calling this function to launch the app and render the map
 var initMap = function () {
+
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: 12,
         center: new google.maps.LatLng(50.442, 30.548),
         mapTypeId: google.maps.MapTypeId.ROADMAP
     });
-    viewModel.init();
-
-};
+        viewModel.init();
+    };
 
 // VIEW MODEL.
 // Displays the list of locations on the left side of the screen
@@ -112,7 +112,7 @@ var model = {
         }
     ],
 
-    //adds content info from Wikipedia to be displayed on the marker when marker is activated
+    //adds content info from Wikipedia to be displayed on the infowindow when marker is activated
     setContent: function () {
         for (var i = 0; i < this.locations.length; i++) {
             var wikiURL = "https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles=" + this.locations[i].title();
@@ -130,7 +130,7 @@ var model = {
                         if (data && data.query && data.query.pages) {
                             var pages = data.query.pages;
                         }
-                        // error: No pages returned
+                        // if error: no pages returned
                         else {
                             result = "No pages were found in Wiki";
                             model.locations[i].infowindow = new google.maps.InfoWindow({
@@ -140,11 +140,18 @@ var model = {
                         for (var id in pages) {
                             result = pages[id].extract;
                             model.locations[i].infowindow = new google.maps.InfoWindow({
-                                content: '<div style="width: 95%;" <strong><b>' + model.locations[i].title() + '</b></strong>'+'<br><br>'+ "Wikipedia info:" + '<br>' + result + '</div>',
-                                maxWidth: '200',
+                                content: '<div style="width: 95%; height:200px; text-align: justify" <strong><b>' + model.locations[i].title() + '</b></strong>'+'<br><br>'+ "Wikipedia info:" + '<br>' + result + '</div>',
+                                maxWidth: '200'
                             })
                         }
                         clearTimeout(wikiRequestTimeout);
+                    },
+                    //error handling for Wikipedia info
+                    fail: function(){
+                        alert("Unable to reach Wikipedia");
+                        model.locations[i].infowindow = new google.maps.InfoWindow({
+                            content: model.locations[i].title() + "<br><br>" + "Wikipedia info:" + "<br>" + "Unavailable"
+                        })
                     }
                 });
             }
@@ -185,35 +192,4 @@ var model = {
         this.addMarkers();
         this.setContent();
     }
-};
-
-
-var parseWikiUrl = function (url) {
-    var result = "";
-    var wikiRequestTimeout = setTimeout(function () {
-        result = "failed to get Wiki resources";
-    }, 8000);
-
-    $.ajax({
-        url: url,
-        dataType: "jsonp",
-        success: function (data) {
-            if (data && data.query && data.query.pages) {
-                var pages = data.query.pages;
-                clearTimeout(wikiRequestTimeout);
-            }
-
-            // error: No pages returned
-            else {
-                result = "No pages were found in Wiki";
-            }
-            for (var id in pages) { // in your case a loop over one property
-                result = pages[id].extract;
-            }
-        }
-
-    });
-    console.log(result);
-    return result;
-
 };
