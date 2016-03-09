@@ -4,7 +4,7 @@ var map = '';
 var initMap = function () {
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: 12,
-        center: new google.maps.LatLng(50.423123, 30.526792),
+        center: new google.maps.LatLng(50.442, 30.548),
         mapTypeId: google.maps.MapTypeId.ROADMAP
     });
     viewModel.init();
@@ -81,9 +81,9 @@ var model = {
     //the list of initial locations
     locations: [
         {
-            title: ko.observable('Home'),
-            lat: 50.38,
-            lng: 30.46,
+            title: ko.observable('Khreshchatyk'),
+            lat: 50.44,
+            lng: 30.51,
             isFiltered: ko.observable(true)
         },
         {
@@ -93,31 +93,61 @@ var model = {
             isFiltered: ko.observable(true)
         },
         {
-            title: ko.observable('Mariinsky Palace'),
+            title: ko.observable('Mariyinsky Palace'),
             lat: 50.44,
             lng: 30.53,
             isFiltered: ko.observable(true)
         },
         {
-            title: ko.observable('Kyivo Pechersk Lavra'),
+            title: ko.observable('Kiev Pechersk Lavra'),
             lat: 50.43,
             lng: 30.55,
             isFiltered: ko.observable(true)
         },
         {
-            title: ko.observable('Richard Lionheart Castle'),
+            title: ko.observable('Andriyivskyy Descent'),
             lat: 50.46,
             lng: 30.51,
             isFiltered: ko.observable(true)
         }
     ],
 
-    //adds content info to be displayed on the marker when marker is activated
+    //adds content info from Wikipedia to be displayed on the marker when marker is activated
     setContent: function () {
         for (var i = 0; i < this.locations.length; i++) {
-            this.locations[i].infowindow = new google.maps.InfoWindow({
-                content: this.locations[i].title()
-            });
+            var wikiURL = "https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles=" + this.locations[i].title();
+            var wikiRequestTimeout = setTimeout(function () {
+                article = "failed to get Wiki resources";
+            }, 8000);
+            var article = getWikiExtract(i, wikiRequestTimeout, wikiURL);
+
+            function getWikiExtract(i, wikiRequestTimeout, wikiURL) {
+                var result = '';
+                $.ajax({
+                    url: wikiURL,
+                    dataType: "jsonp",
+                    success: function (data) {
+                        if (data && data.query && data.query.pages) {
+                            var pages = data.query.pages;
+                        }
+                        // error: No pages returned
+                        else {
+                            result = "No pages were found in Wiki";
+                            model.locations[i].infowindow = new google.maps.InfoWindow({
+                                content: model.locations[i].title() + "<br><br>" + "Wikipedia info:" + "<br>" + result,
+                            })
+                        }
+                        for (var id in pages) {
+                            result = pages[id].extract;
+                            model.locations[i].infowindow = new google.maps.InfoWindow({
+                                content: '<div style="width: 95%;" <strong><b>' + model.locations[i].title() + '</b></strong>'+'<br><br>'+ "Wikipedia info:" + '<br>' + result + '</div>',
+                                maxWidth: '200',
+                            })
+                        }
+                        clearTimeout(wikiRequestTimeout);
+                    }
+                });
+            }
         }
     },
 
@@ -158,3 +188,32 @@ var model = {
 };
 
 
+var parseWikiUrl = function (url) {
+    var result = "";
+    var wikiRequestTimeout = setTimeout(function () {
+        result = "failed to get Wiki resources";
+    }, 8000);
+
+    $.ajax({
+        url: url,
+        dataType: "jsonp",
+        success: function (data) {
+            if (data && data.query && data.query.pages) {
+                var pages = data.query.pages;
+                clearTimeout(wikiRequestTimeout);
+            }
+
+            // error: No pages returned
+            else {
+                result = "No pages were found in Wiki";
+            }
+            for (var id in pages) { // in your case a loop over one property
+                result = pages[id].extract;
+            }
+        }
+
+    });
+    console.log(result);
+    return result;
+
+};

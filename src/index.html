@@ -5,6 +5,7 @@
     <title>Neighbourhood map</title>
 
     <script src="js/lib/knockout-3.2.0.js"></script>
+    <script src="js/lib/jquery.min.js"></script>
     <script src="js/main.js"></script>
 
     <script async defer
@@ -16,17 +17,18 @@
 
 <body>
 
-<div class="col-md-2 col-xs-4 filterDiv" >
-    <h4>Kyiv favorites:</h4>
-    <input placeholder="Search..." type="search" data-bind="value: searchQuery, valueUpdate: 'input'" autocomplete="off">
+    <div class="col-md-2 col-xs-4 filterDiv" >
+        <h4>Kyiv favorites:</h4>
+        <input placeholder="Search..." type="search" data-bind="value: searchQuery, valueUpdate: 'input'" autocomplete="on">
 
-    <ul id="locationList" data-bind="foreach: locations">
-        <div data-bind="if: isFiltered">
-        <li data-bind="text: title, click: $parent.toggleMarker"></li>
-        </div>
-    </ul>
-</div>
-<div class="col-md-10 col-xs-8" id="map"></div>
+        <ul id="locationList" data-bind="foreach: locations">
+            <div data-bind="if: isFiltered">
+            <li data-bind="text: title, click: $parent.toggleMarker"></li>
+            </div>
+        </ul>
+    </div>
+    <div class="col-md-10 col-xs-8" id="map"></div>
+
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
       integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
