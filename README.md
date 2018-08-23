@@ -3,7 +3,7 @@ Udacity Frontend Nanodegree, P-5.1
 
 Welcome to the map of my favorite places in Kyiv, Ukraine!
 
-See project website [here](http://aviun.github.io/neighbourhood-map/dist).
+See project website [here](https://aviun.github.io/neighbourhood-map/dist).
 
 And the the source code [here](https://github.com/aviun/neighbourhood-map/tree/master/src).
 
